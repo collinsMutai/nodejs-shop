@@ -19,7 +19,7 @@ exports.postAddProduct = (req, res, next) => {
     price: price,
     description: description,
     imageUrl: imageUrl,
-    userId: req.user
+    userId: req.user,
   });
   product
     .save()
@@ -64,11 +64,11 @@ exports.postEditProduct = (req, res, next) => {
 
   Product.findById(prodId)
     .then((product) => {
-      product.title = updatedTitle
-      product.price = updatedPrice
-      product.description = updatedDesc
-      product.imageUrl = updatedImageUrl
-      
+      product.title = updatedTitle;
+      product.price = updatedPrice;
+      product.description = updatedDesc;
+      product.imageUrl = updatedImageUrl;
+
       return product.save();
     })
     .then((result) => {
@@ -80,8 +80,7 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find()
-    // .select('title price -_id')
-    // .populate('userId', 'name')
+
     .then((products) => {
       console.log(products);
       res.render("admin/products", {
