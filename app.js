@@ -1,4 +1,6 @@
 const path = require("path");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -16,18 +18,17 @@ const User = require("./models/user");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 var cron = require("node-cron");
+const api_key = process.env.api_key;
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
-      api_key:
-        "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",
+      api_key: api_key,
     },
   })
 );
 
-const MONGODB_URI =
-  "mongodb+srv://nodejsshop23:nodejsshop23@cluster0.npgx5av.mongodb.net/nodejsshop?retryWrites=true&w=majority";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const app = express();
 const store = new MongoDbStore({
@@ -95,7 +96,6 @@ mongoose
   .connect(MONGODB_URI)
   .then((result) => {
     cron.schedule("*/10 * * * * *", () => {
-      
       User.find({ signin: 1 }).then((data) => {
         data.forEach((item) => {
           transporter.sendMail({
